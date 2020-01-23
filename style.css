@@ -1,0 +1,95 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+html {
+	box-sizing: border-box;
+	font-size: 62.5%;
+}
+
+td {
+	width: 10rem;
+	height: 10rem;
+	border: 5px solid #171730;
+	cursor: pointer;
+	text-align:  center;
+	font-size: 7rem;
+	color: #171730;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-style: italic;
+}
+
+.table__wrapper {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.table__wrapper > * {
+	margin: 1rem 0;
+}
+
+.tic__tac--table {
+	border-collapse: collapse;
+}
+
+.tic__tac--table tr:nth-child(1) td {
+	border-top: none;
+}
+
+.tic__tac--table tr:nth-child(3) td {
+	border-bottom: none;
+}
+
+.tic__tac--table tr td:nth-child(3) {
+	border-right: none;
+}
+
+.tic__tac--table tr td:nth-child(1) {
+	border-left: none;
+}
+
+.endgame {
+	display: none;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	background: #000;
+	opacity: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+button {
+	height: 4rem;
+	background-color: #171730;
+	border: none;
+	color: #fff;
+	font-size: 1.5rem;
+	width: 15rem;
+	border-radius: 10rem;
+	cursor: pointer;
+	opacity: 1;
+}
+
+
+
+.endgame .text {
+	color: #171786;
+	font-size: 10rem;
+}
+
+
+
+
