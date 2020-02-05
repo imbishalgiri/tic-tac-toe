@@ -2,14 +2,14 @@ let ticBoard;
 const player = '0';
 const bot = 'X';
 const winPos = [
-	[0,1,2],
-	[3,4,5],
-	[6,7,8],
-	[0,4,8],
-	[2,4,6],
-	[0,3,6],
-	[1,4,7],
-	[2,5,8]
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	[0, 4, 8],
+	[6, 4, 2]
 ];
 
 const cells = document.querySelectorAll('.cell');
@@ -72,6 +72,7 @@ function gameOver(gameWon) {
 }
 
 function bestCell() {
+	console.log(minimax(ticBoard, bot).index);
 	return minimax(ticBoard, bot).index;
 }
 
@@ -80,7 +81,7 @@ function emptyCells() {
 }
 
 function draw() {
-	if(emptyCells().length == 0){
+	if(emptyCells().length == 0 && checkWinner(ticBoard, player).player != player){
 		for (let i = 0; i < cells.length; i++){
 			cells[i].style.backgroundColor = "#990066";
 			cells[i].removeEventListener('click', makeChoice);
@@ -96,51 +97,53 @@ function declareWinner(str) {
 	document.querySelector(".endgame .text").innerText = str;
 }
 
-function minimax(newBoard, player){
-	let availSpots= emptyCells(newBoard);
-
-	if (checkWinner(newBoard, player)){
-		return {score: -10};
-	} else if (checkWinner(newBoard, bot)){
-		return {score: 10};
-	} else if (availSpots.length === 0){
-		return {score : 0};
-	}
-	let moves = [];
-	for (let i = 0; i < availSpots.length; i++){
-		let move = {};
-		move.index = newBoard[availSpots[i]];
-		newBoard[availSpots[i]] = player;
-
-		if (player == bot) {
-			let result = minimax(newBoard, player);
-			move.score = result.score;
-		} else {
-			let result = minimax(newBoard, bot);
-			move.score = result.score;
-		}
-		newBoard[availSpots[i]] = move.index;
-		moves.push(move);
-	}
- 
-	let bestMove;
-	if (player == bot){
-		let bestScore = -10000;
-		for (let i = 0; i < moves.length; i++) {
-			if (moves[i].score > bestScore) {
-				bestScore = moves[i].score;
-				bestMove = i;
-			}
-		}
-	} else {
-		let bestScore = 10000;
-		for (let i = 0; i < moves.length; i++) {
-			if (moves[i].score < bestScore) {
-				bestScore = moves[i].score;
-				bestMove = i;
-			}
-		}
-	}
-	return moves[bestMove];
+function minimax(newBoard, player) {
+  var availSpots = emptyCells(newBoard);
+  
+  if (checkWinner(newBoard, player)) {
+    return {score: -10};
+  } else if (checkWinner(newBoard, bot)) {
+    return {score: 10};
+  } else if (availSpots.length === 0) {
+    return {score: 0};
+  }
+  
+  var moves = [];
+  for (let i = 0; i < availSpots.length; i ++) {
+    var move = {};
+    move.index = newBoard[availSpots[i]];
+    newBoard[availSpots[i]] = player;
+    
+    if (player === bot)
+      move.score = minimax(newBoard,player).score;
+    else
+       move.score =  minimax(newBoard, bot).score;
+    newBoard[availSpots[i]] = move.index;
+    if ((player === bot && move.score === 10) || (player === player && move.score === -10))
+      return move;
+    else 
+      moves.push(move);
+  }
+  
+  let bestMove, bestScore;
+  if (player === bot) {
+    bestScore = -1000;
+    for(let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+      bestScore = 1000;
+      for(let i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+  
+  return moves[bestMove];
 }
 
